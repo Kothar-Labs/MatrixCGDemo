@@ -7,7 +7,6 @@ A demonstration of linear algebra applications in computer graphics by SZMS/Koth
 - Open `Mat_demo.properties` and change `INPUT_SOURCE` to "matadata.txt".
 - Run the file `Mat_demo.java`.
 
-[=If it does not work then do it again, if it does not work still, restart your computer.=]
 
 ## Notice
-- Matrix transformation module does have an interface currently. It would probably be online tomorrow,
+- Matrix transformation module does have an interface currently. It would probably be online tomorrow.
