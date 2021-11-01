@@ -33,7 +33,8 @@ public class Mat_demo{
 
         this.setLocation(100,100);
 
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.BLACK);
+        repaint();
 
         curG=this.getGraphics();
         printComponents(curG);
@@ -51,19 +52,19 @@ public class Mat_demo{
 
         @Override
         public void printComponents(Graphics g){
-            GrfFrame.render(g,this.oprands);
+            this.render((Graphics2D)g,this.oprands);
         }
         /**
          * Render the geometric graph on the frame.
          * @param g Graphics of the frame.
          * @param ori Designated geometric graph.
          */
-        public static void render(Graphics g,GeoGraph ori){
-            Graphics2D g2d=(Graphics2D)g;
-            g2d.setColor(Color.BLACK);
-            g2d.setStroke(new BasicStroke(3.0f));
+        public void render(Graphics2D g2d,GeoGraph ori){
+            g2d.setColor(Color.WHITE);
+            g2d.setStroke(new BasicStroke(Float.parseFloat(prop.getProperty("LINE_WIDTH"))));
             double[][] grfSchem=ori.getSchem();
             try{
+                Thread.sleep(Integer.parseInt(prop.getProperty("INIT_DELAY")));
                 for(int i=0;i<grfSchem.length;++i){
                     g2d.drawLine(
                         toPixVal(grfSchem[i][0]),
@@ -71,6 +72,7 @@ public class Mat_demo{
                         toPixVal(grfSchem[i][2]),
                         toPixVal(grfSchem[i][3])
                     );
+                    Thread.sleep(Integer.parseInt(prop.getProperty("STEP_DELAY")));
                 }
             }
             catch(Exception e){
@@ -99,7 +101,18 @@ public class Mat_demo{
     public static class GeoGraph{
         point[] node;
         int[][] edges;
-        private int nodeCount,edgeCount;
+        public int nodeCount,edgeCount;
+        /**
+         * Trivial constructor used for debugging.
+         * @see GeoGraph
+         * @see linearTrans
+         */
+        public GeoGraph(int nodeC, int edgeC, point[] node, int[][] edges){
+            this.nodeCount=nodeC;
+            this.edgeCount=edgeC;
+            this.node=node;
+            this.edges=edges;
+        }
         /**
          * Create a geometric graph from a structure and a data list for the metrics.
          * @param nodesize Amount of nodes.
@@ -115,8 +128,8 @@ public class Mat_demo{
         public GeoGraph(int nodesize, int edgesize, double[] nodeDat, int[] struc){
             this.nodeCount=nodesize;
             this.edgeCount=edgesize;
-            this.node=new point[nodesize];
-            this.edges=new int[nodesize][2];
+            this.node=new point[this.nodeCount];
+            this.edges=new int[this.nodeCount][2];
             try{
                 int datTop=-1;
                 for(int i=0;i<node.length;++i){
@@ -181,7 +194,6 @@ public class Mat_demo{
         else{
             sc=new Scanner(prop.getProperty("INPUT_SOURCE"));
         }
-        
         new GrfFrame(readMeta());
     }
 }
